@@ -6,9 +6,11 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quis
-          dolores numquam iusto Ratione earum ducimus autem id iure pariatur
-          dolorum quae maiores.
+          I am an Agentic AI Architect and Full-Stack Developer from Karachi,
+          pioneering autonomous multi-agent swarms, context engineering, and
+          high-performance Next.js web applications. Driven by relentless
+          curiosity, I engineer intelligent systems that seamlessly connect
+          cutting-edge AI models with scalable production cloud architectures.
         </p>
       </div>
     </div>

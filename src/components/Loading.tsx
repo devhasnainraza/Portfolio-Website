@@ -15,8 +15,8 @@ const Loading = ({ percent }: { percent: number }) => {
       setLoaded(true);
       setTimeout(() => {
         setIsLoaded(true);
-      }, 1000);
-    }, 600);
+      }, 200);
+    }, 150);
   }
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Loading = ({ percent }: { percent: number }) => {
             module.initialFX();
           }
           setIsLoading(false);
-        }, 900);
+        }, 250);
       }
     });
   }, [isLoaded]);
@@ -46,7 +46,7 @@ const Loading = ({ percent }: { percent: number }) => {
     <>
       <div className="loading-header">
         <a href="/#" className="loader-title" data-cursor="disable">
-          Logo
+          MH
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
           <div className="loaderGame-container">
@@ -62,8 +62,8 @@ const Loading = ({ percent }: { percent: number }) => {
       <div className="loading-screen">
         <div className="loading-marquee">
           <Marquee>
-            <span> A Creative Developer</span> <span>A Creative Designer</span>
-            <span> A Creative Developer</span> <span>A Creative Designer</span>
+            <span> A Full-Stack Developer</span> <span>A Agentic AI Architect</span>
+            <span> A Full-Stack Developer</span> <span>A Agentic AI Architect</span>
           </Marquee>
         </div>
         <div
@@ -96,40 +96,43 @@ export const setProgress = (setLoading: (value: number) => void) => {
   let percent: number = 0;
 
   let interval = setInterval(() => {
-    if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
+    if (percent < 90) {
+      percent += Math.floor(Math.random() * 5) + 3;
+      if (percent > 90) percent = 90;
       setLoading(percent);
-    } else {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
-        setLoading(percent);
-        if (percent > 91) {
-          clearInterval(interval);
-        }
-      }, 2000);
     }
-  }, 100);
+  }, 40);
+
+  // Safety fallback: ensure loading never hangs past 3.5 seconds
+  const safetyTimeout = setTimeout(() => {
+    clearInterval(interval);
+    percent = 100;
+    setLoading(100);
+  }, 3500);
 
   function clear() {
     clearInterval(interval);
+    clearTimeout(safetyTimeout);
+    percent = 100;
     setLoading(100);
   }
 
   function loaded() {
     return new Promise<number>((resolve) => {
       clearInterval(interval);
-      interval = setInterval(() => {
-        if (percent < 100) {
-          percent++;
-          setLoading(percent);
-        } else {
-          resolve(percent);
-          clearInterval(interval);
-        }
-      }, 2);
+      clearTimeout(safetyTimeout);
+      percent = 100;
+      setLoading(100);
+      resolve(100);
     });
   }
-  return { loaded, percent, clear };
+
+  function update(val: number) {
+    if (val > percent && percent < 98) {
+      percent = Math.min(val, 98);
+      setLoading(percent);
+    }
+  }
+
+  return { loaded, percent, clear, update };
 };

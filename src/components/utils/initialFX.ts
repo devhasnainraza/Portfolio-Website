@@ -4,8 +4,15 @@ import { smoother } from "../Navbar";
 
 export function initialFX() {
   document.body.style.overflowY = "auto";
-  smoother.paused(false);
-  document.getElementsByTagName("main")[0].classList.add("main-active");
+  if (smoother) {
+    smoother.scrollTop(0);
+    smoother.paused(false);
+  }
+  window.scrollTo(0, 0);
+  const mainEl = document.getElementsByTagName("main")[0];
+  if (mainEl) {
+    mainEl.classList.add("main-active");
+  }
   gsap.to("body", {
     backgroundColor: "#0b080c",
     duration: 0.5,
@@ -84,6 +91,8 @@ function LoopText(Text1: SplitText, Text2: SplitText) {
   var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   const delay = 4;
   const delay2 = delay * 2 + 1;
+
+  gsap.set(Text2.chars, { opacity: 0, y: 80 });
 
   tl.fromTo(
     Text2.chars,

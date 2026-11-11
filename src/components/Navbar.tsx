@@ -10,12 +10,22 @@ export let smoother: ScrollSmoother;
 
 const Navbar = () => {
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
-      effects: true,
+      smooth: 0.6,
+      speed: 1,
+      effects: false,
       autoResize: true,
       ignoreMobileResize: true,
     });
@@ -27,11 +37,16 @@ const Navbar = () => {
     links.forEach((elem) => {
       let element = elem as HTMLAnchorElement;
       element.addEventListener("click", (e) => {
+        e.preventDefault();
+        let elem = e.currentTarget as HTMLAnchorElement;
+        let section = elem.getAttribute("data-href");
         if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
           smoother.scrollTo(section, true, "top top");
+        } else if (section) {
+          const target = document.querySelector(section);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
         }
       });
     });
@@ -43,19 +58,24 @@ const Navbar = () => {
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
+          MH
         </a>
-        <a
-          href="mailto:example@mail.com"
+        {/* <a
+          href="mailto:chat.hasnain@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
-        </a>
+          chat.hasnain@gmail.com
+        </a> */}
         <ul>
           <li>
             <a data-href="#about" href="#about">
               <HoverLinks text="ABOUT" />
+            </a>
+          </li>
+          <li>
+            <a data-href="#journey" href="#journey">
+              <HoverLinks text="JOURNEY" />
             </a>
           </li>
           <li>

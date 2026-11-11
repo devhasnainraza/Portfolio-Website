@@ -9,13 +9,13 @@
 }
 .social-icons {
   position: absolute;
-  left: -20px;
+  left: -10px;
   bottom: 20px;
-  display: none;
+  display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   z-index: 999;
-  padding: 10px;
+  padding: 8px;
 }
 .social-icons:hover {
   transition: 0.3s;
@@ -26,8 +26,8 @@
   /* transform: scale(1.2); */
 }
 .social-icons span {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   position: relative;
   display: flex;
 }
@@ -39,7 +39,7 @@
   top: var(--siTop, 50%);
   transform: translate(-50%, -50%);
   display: flex;
-  font-size: 23px;
+  font-size: 20px;
   will-change: left, top;
   transition: transform 0.3s ease-out;
 }

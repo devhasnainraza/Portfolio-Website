@@ -1,29 +1,42 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./styles/WhatIDo.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const WhatIDo = () => {
-  const containerRef = useRef<(HTMLDivElement | null)[]>([]);
-  const setRef = (el: HTMLDivElement | null, index: number) => {
-    containerRef.current[index] = el;
-  };
+  const [activeCard, setActiveCard] = useState<number | null>(0);
+  const [isMobile, setIsMobile] = useState<boolean>(
+    typeof window !== "undefined" ? window.innerWidth <= 900 : false
+  );
+
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
-        }
-      });
-    }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 900);
     };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const toggleCard = (index: number, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    if (isMobile) {
+      setActiveCard((prev) => (prev === index ? null : index));
+    }
+  };
+
+  const getCardClass = (index: number) => {
+    if (!isMobile) {
+      return "what-content what-noTouch";
+    }
+    let classes = "what-content";
+    if (activeCard === index) {
+      classes += " what-content-active";
+    } else if (activeCard !== null) {
+      classes += " what-sibling";
+    }
+    return classes;
+  };
+
   return (
     <div className="whatIDO">
       <div className="what-box">
@@ -59,8 +72,8 @@ const WhatIDo = () => {
             </svg>
           </div>
           <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 0)}
+            className={getCardClass(0)}
+            onClick={() => toggleCard(0)}
           >
             <div className="what-border1">
               <svg height="100%">
@@ -87,31 +100,41 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>DEVELOP</h3>
-              <h4>Description</h4>
+              <h3>AGENTIC AI</h3>
+              <h4>Autonomous Architectures</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae.
+                Architecting enterprise-grade autonomous agents, multi-agent
+                orchestration swarms, and context-engineered conversational
+                systems. Specializing in intelligent tool calling, real-time
+                voice agents, and robust multi-cloud agentic workflows.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Skillset & Architecture</h5>
               <div className="what-content-flex">
-                <div className="what-tags">JavaScript</div>
-                <div className="what-tags">TypeScript</div>
-                <div className="what-tags">Three.js</div>
-                <div className="what-tags">React</div>
-                <div className="what-tags">Css</div>
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">Express.js</div>
-                <div className="what-tags">PHP</div>
-                <div className="what-tags">MySql</div>
+                <div className="what-tags">Agentic AI Architect</div>
+                <div className="what-tags">OpenAI Agents SDK</div>
+                <div className="what-tags">LangGraph</div>
+                <div className="what-tags">LangChain</div>
+                <div className="what-tags">Multi-Agent Systems</div>
+                <div className="what-tags">Context Engineering</div>
+                <div className="what-tags">Prompt Engineering</div>
+                <div className="what-tags">Model Context Protocol (MCP)</div>
+                <div className="what-tags">Voice & Conversational AI</div>
+                <div className="what-tags">Agentic Workflows</div>
+                <div className="what-tags">FastAPI</div>
+                <div className="what-tags">Python</div>
               </div>
-              <div className="what-arrow"></div>
+              <div
+                className="what-arrow"
+                onClick={(e) => toggleCard(0, e)}
+                role="button"
+                tabIndex={0}
+                aria-label="Toggle Agentic AI section"
+              ></div>
             </div>
           </div>
           <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 1)}
+            className={getCardClass(1)}
+            onClick={() => toggleCard(1)}
           >
             <div className="what-border1">
               <svg height="100%">
@@ -128,24 +151,37 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>DESIGN</h3>
-              <h4>Description</h4>
+              <h3>FULL-STACK</h3>
+              <h4>Cloud & Web Systems</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae
+                Engineering high-performance, type-safe web applications and
+                cloud-native systems. Transforming complex requirements and
+                Figma designs into production-ready platforms powered by
+                scalable backends and modern database architectures.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Skillset & Architecture</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Blender</div>
-                <div className="what-tags">Zbrush</div>
-                <div className="what-tags">UI Design</div>
-                <div className="what-tags">Motion</div>
-                <div className="what-tags">Rigging</div>
-                <div className="what-tags">3D Animation</div>
-                <div className="what-tags">Character Design</div>
-                <div className="what-tags">Modelling</div>
+                <div className="what-tags">Next.js</div>
+                <div className="what-tags">TypeScript</div>
+                <div className="what-tags">React</div>
+                <div className="what-tags">Tailwind CSS</div>
+                <div className="what-tags">Node.js</div>
+                <div className="what-tags">Express.js</div>
+                <div className="what-tags">Database Architecture</div>
+                <div className="what-tags">PostgreSQL</div>
+                <div className="what-tags">Docker</div>
+                <div className="what-tags">Kubernetes</div>
+                <div className="what-tags">Apache Kafka</div>
+                <div className="what-tags">Dapr</div>
+                <div className="what-tags">Sanity CMS</div>
               </div>
-              <div className="what-arrow"></div>
+              <div
+                className="what-arrow"
+                onClick={(e) => toggleCard(1, e)}
+                role="button"
+                tabIndex={0}
+                aria-label="Toggle Full-Stack section"
+              ></div>
             </div>
           </div>
         </div>
@@ -155,18 +191,3 @@ const WhatIDo = () => {
 };
 
 export default WhatIDo;
-
-function handleClick(container: HTMLDivElement) {
-  container.classList.toggle("what-content-active");
-  container.classList.remove("what-sibling");
-  if (container.parentElement) {
-    const siblings = Array.from(container.parentElement.children);
-
-    siblings.forEach((sibling) => {
-      if (sibling !== container) {
-        sibling.classList.remove("what-content-active");
-        sibling.classList.toggle("what-sibling");
-      }
-    });
-  }
-}

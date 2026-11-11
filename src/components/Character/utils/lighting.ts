@@ -3,6 +3,14 @@ import { RGBELoader } from "three-stdlib";
 import { gsap } from "gsap";
 
 const setLighting = (scene: THREE.Scene) => {
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0);
+  scene.add(ambientLight);
+
+  const frontLight = new THREE.DirectionalLight(0xffffff, 0);
+  frontLight.position.set(0, 5, 12);
+  frontLight.castShadow = true;
+  scene.add(frontLight);
+
   const directionalLight = new THREE.DirectionalLight(0xc7a9ff, 0);
   directionalLight.intensity = 0;
   directionalLight.position.set(-0.47, -0.32, -1);
@@ -28,8 +36,8 @@ const setLighting = (scene: THREE.Scene) => {
     });
 
   function setPointLight(screenLight: any) {
-    if (screenLight.material.opacity > 0.9) {
-      pointLight.intensity = screenLight.material.emissiveIntensity * 20;
+    if (screenLight && screenLight.material && screenLight.material.opacity > 0.9) {
+      pointLight.intensity = (screenLight.material.emissiveIntensity || 0) * 20;
     } else {
       pointLight.intensity = 0;
     }
@@ -39,6 +47,16 @@ const setLighting = (scene: THREE.Scene) => {
   function turnOnLights() {
     gsap.to(scene, {
       environmentIntensity: 0.64,
+      duration: duration,
+      ease: ease,
+    });
+    gsap.to(ambientLight, {
+      intensity: 1.2,
+      duration: duration,
+      ease: ease,
+    });
+    gsap.to(frontLight, {
+      intensity: 1.8,
       duration: duration,
       ease: ease,
     });
